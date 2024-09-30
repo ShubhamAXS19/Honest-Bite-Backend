@@ -1,4 +1,5 @@
-import { prop } from "@typegoose/typegoose";
+import { prop, getModelForClass, Ref } from "@typegoose/typegoose";
+import { User } from "./user.model";
 
 export class Post {
   @prop({ required: true })
@@ -9,9 +10,6 @@ export class Post {
 
   @prop({ required: true })
   location: string;
-
-  @prop({ required: true })
-  date: string;
 
   @prop()
   likes: number;
@@ -37,8 +35,10 @@ export class Post {
   @prop()
   tags: string[];
 
-  @prop({ required: true })
-  userId: number;
+  @prop({ ref: "User" })
+  user: Ref<User>;
 }
 
-export default Post;
+const PostModel = getModelForClass(Post);
+
+export default PostModel;

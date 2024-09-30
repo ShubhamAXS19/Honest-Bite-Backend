@@ -1,14 +1,17 @@
 import express from "express";
-import { createUserHandler } from "../controllers/user.controller";
+import { createPostHandler } from "../controllers/post.controller";
 import validateResource from "../middlewares/validateResource";
-import { createUserSchema } from "../schemas/user.schema";
+import { createPostSchema } from "../schemas/post.schema";
 
 const router = express.Router();
 
 router.post(
-  "/api/create-post",
-  validateResource(createUserSchema),
-  createUserHandler
+  "/create-post",
+  validateResource(createPostSchema),
+  createPostHandler
 );
+router.delete("/delete-post", createPostHandler);
+router.put("/edit-post", createPostHandler);
+router.get("/get-post", createPostHandler);
 
 export default router;

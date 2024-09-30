@@ -1,12 +1,12 @@
 import nodemailer, { SendMailOptions } from "nodemailer";
 import log from "./logger";
 
-async function createTestCreds() {
-  const creds = await nodemailer.createTestAccount();
-  console.log({ creds });
-}
+// async function createTestCreds() {
+//   const creds = await nodemailer.createTestAccount();
+//   console.log({ creds });
+// }
 
-createTestCreds();
+// createTestCreds();
 
 const smtp = {
   user: process.env.SMTP_USER as string,

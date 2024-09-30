@@ -1,4 +1,4 @@
-import { object, array, string, number, boolean } from "zod";
+import { object, TypeOf, array, string, number, boolean } from "zod";
 
 export const createPostSchema = object({
   body: object({
@@ -11,7 +11,6 @@ export const createPostSchema = object({
     location: string({
       required_error: "location is required",
     }),
-    date: string(),
     likes: number().nonnegative(),
     comments: array(string()),
     shares: number().nonnegative(),
@@ -20,6 +19,7 @@ export const createPostSchema = object({
     Cuisine: array(string()),
     mealType: array(string()),
     tags: array(string()),
-    userId: number().positive(),
   }),
 });
+
+export type CreatePostInput = TypeOf<typeof createPostSchema>["body"];
