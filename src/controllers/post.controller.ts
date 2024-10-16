@@ -9,7 +9,6 @@ import {
 } from "../services/post.service";
 import { findUserById, findUserByIdAndUpdate } from "../services/user.service";
 import { CreatePostInput } from "../schemas/post.schema";
-
 export async function createPostHandler(
   req: Request<{}, {}, CreatePostInput>,
   res: Response
@@ -23,7 +22,10 @@ export async function createPostHandler(
     const postData = {
       ...req.body,
       img: imageUrls,
-      tags: [req.body.Dietary, req.body.Cuisine, req.body.mealType],
+      tags: [req.body.Dietary, req.body.Cuisine, req.body.mealType].filter(
+        (tag): tag is string => tag !== undefined
+      ), // Filter out undefined tags
+      location: req.body.location.coordinates,
     };
 
     const post = await createPost(postData, userId);

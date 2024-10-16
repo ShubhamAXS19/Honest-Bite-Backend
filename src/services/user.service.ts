@@ -1,6 +1,6 @@
 import UserModel, { User, privateFields } from "../models/user.model";
 import SessionModel from "../models/session.model";
-import PostModel, { Post } from "../models/post.model";
+import { Post } from "../models/post.model";
 import { DocumentType } from "@typegoose/typegoose";
 import { omit } from "lodash";
 import { signJwt } from "../utils/jwt";
@@ -13,7 +13,10 @@ export function findUserById(id: string) {
   return UserModel.findById(id);
 }
 
-export function findUserByIdAndUpdate(id: string, savedPost: Partial<Post>) {
+export function findUserByIdAndUpdate(
+  id: string,
+  savedPost: Partial<Post> & { _id: string }
+) {
   return UserModel.findByIdAndUpdate(
     id,
     { $push: { posts: savedPost._id } },

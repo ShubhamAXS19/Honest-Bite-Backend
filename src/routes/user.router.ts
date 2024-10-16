@@ -5,7 +5,7 @@ import {
   forgotPasswordHandler,
   resetPasswordHandler,
   createSessionHandler,
-  refreshAccessTokenHandler,
+  // refreshAccessTokenHandler,
   getCurrentUserHandler,
   requireUser,
   logoutHandler,
@@ -50,6 +50,6 @@ router.post(
   createSessionHandler
 );
 
-router.post("/sessions/refresh", refreshAccessTokenHandler);
+// router.post("/sessions/refresh", refreshAccessTokenHandler);
 
 export default router;
