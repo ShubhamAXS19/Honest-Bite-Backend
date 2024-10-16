@@ -9,7 +9,7 @@ const deserializeUser = async (
     /^Bearer\s/,
     ""
   );
-
+  // console.log(accessToken);
   if (!accessToken) {
     return next();
   }

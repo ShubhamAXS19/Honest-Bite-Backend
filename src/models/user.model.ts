@@ -13,6 +13,14 @@ import argon2 from "argon2";
 import log from "../utils/logger";
 import { Post } from "./post.model";
 
+export const privateFields = [
+  "password",
+  "__v",
+  "verificationCode",
+  "passwordResetCode",
+  "verified",
+];
+
 @pre<User>("save", async function () {
   if (!this.isModified("password")) {
     return;
@@ -62,6 +70,18 @@ export class User {
 
   @prop({ ref: () => Post })
   posts: Ref<Post>[];
+
+  @prop({ default: 0 })
+  followers: number;
+
+  @prop({ default: 0 })
+  following: number;
+
+  @prop()
+  bookmarks: Ref<Post>[];
+
+  @prop()
+  fav: Ref<Post>[];
 
   async validatePassword(this: DocumentType<User>, candidatePassword: string) {
     try {

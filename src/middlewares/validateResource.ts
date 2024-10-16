@@ -12,7 +12,8 @@ const validateResource =
       });
       next();
     } catch (e: any) {
-      return res.status(400).send(e);
+      console.error("Validation error:", e.errors);
+      return res.status(400).send({ message: e.errors });
     }
   };
 
