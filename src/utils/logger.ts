@@ -1,9 +1,9 @@
-import logger from "pino";
+import pino from "pino"; // Changed from 'logger' to 'pino'
 import dayjs from "dayjs";
 
 const level = "info";
 
-const log = logger({
+const log = pino({
   transport: {
     target: "pino-pretty",
   },

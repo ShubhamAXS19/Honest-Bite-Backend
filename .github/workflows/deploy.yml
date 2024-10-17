@@ -69,5 +69,5 @@ jobs:
           # Stop any existing processes
           pm2 delete all || true
           
-          # Start with the correct entry point
-          pm2 start dist/app.js --node-args="--experimental-modules" --name "honest-bite"
+          # Start with the correct entry point and ES modules support
+          NODE_OPTIONS="--experimental-modules --es-module-specifier-resolution=node" pm2 start dist/app.js --name "honest-bite"
