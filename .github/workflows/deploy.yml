@@ -1,0 +1,73 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.5.1'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build TypeScript
+      run: npm run build
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+        
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ec2-user/app/Honest-Bite-Backend
+          git pull origin master
+          npm install
+          npm run build
+          
+          # Create or update .env file
+          cat > .env << EOL
+          PORT=3000
+          USERNAME=${{ secrets.MONGO_USERNAME }}
+          PASSWORD=${{ secrets.MONGO_PASSWORD }}
+          DB_URI=${{ secrets.DB_URI }}
+          
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_PASS=${{ secrets.SMTP_PASS }}
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_SECURE=${{ secrets.SMTP_SECURE }}
+          SMTP_SERVICE=${{ secrets.SMTP_SERVICE }}
+          
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION=${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET_NAME=${{ secrets.AWS_S3_BUCKET_NAME }}
+          
+          accessTokenPrivateKey=${{ secrets.ACCESS_TOKEN_PRIVATE_KEY }}
+          refreshTokenPrivateKey=${{ secrets.REFRESH_TOKEN_PRIVATE_KEY }}
+          accessTokenPublicKey=${{ secrets.ACCESS_TOKEN_PUBLIC_KEY }}
+          refreshTokenPublicKey=${{ secrets.REFRESH_TOKEN_PUBLIC_KEY }}
+          EOL
+          
+          # Stop any existing processes
+          pm2 delete all || true
+          
+          # Start with the correct entry point
+          pm2 start dist/app.js --node-args="--experimental-modules" --name "honest-bite"
