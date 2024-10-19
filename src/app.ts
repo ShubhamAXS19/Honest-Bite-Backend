@@ -119,7 +119,7 @@ app.use("/v1/auth", userRouter);
 app.use("/v1/post", postRouter);
 app.use("/v1/eat", spotRouter);
 
-app.use("v1", (req, res) => {
+app.use("/v1", (req, res) => {
   res.send("Testing nginx");
 });
 
