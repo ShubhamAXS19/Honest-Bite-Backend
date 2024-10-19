@@ -1,19 +1,20 @@
+# Use Node.js LTS (Long Term Support) version
 FROM node:18-alpine
 
+# Create app directory
 WORKDIR /usr/src/app
 
-# Copy package files
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm install
 
-# Copy built application
-COPY dist/ ./dist/
-COPY .env ./
+# Bundle app source
+COPY . .
 
-# Expose port
+# Expose the port your app runs on
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "dist/app.js"]
+# Command to run your application
+CMD [ "node", "index.js" ]
