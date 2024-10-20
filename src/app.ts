@@ -19,7 +19,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://honest-bite-frontend.vercel.app/",
     methods: ["GET", "POST"],
   },
 });
@@ -118,10 +118,6 @@ app.get("/test", (req, res) => {
 app.use("/v1/auth", userRouter);
 app.use("/v1/post", postRouter);
 app.use("/v1/eat", spotRouter);
-
-app.use("/v1", (req, res) => {
-  res.send("Testing nginx");
-});
 
 async function connectToDb() {
   const dbUri = process.env.DB_URI as string;
