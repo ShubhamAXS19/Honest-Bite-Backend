@@ -58,9 +58,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${HOST} '
           export NVM_DIR="$HOME/.nvm" &&
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&  # This loads nvm
-          cd /home/ubuntu/Honest-Bite-Backend/ &&
+          cd /home/ubuntu/Honest-Bite-Backend &&
           git pull origin master &&
           npm install &&
           npm run build &&
-          pm2 stop HonestBiteBackend/ &&
-          pm2 restart HonestBiteBackend/'
+          pm2 stop HonestBiteBackend &&
+          pm2 restart HonestBiteBackend'
