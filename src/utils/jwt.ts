@@ -8,6 +8,7 @@ export function signJwt(
   const signinKey = Buffer.from(process.env[KeyName]!, "base64").toString(
     "ascii"
   );
+  console.log("Key: ", signinKey);
   return jwt.sign(object, signinKey, {
     ...(options && options),
     algorithm: "RS256",

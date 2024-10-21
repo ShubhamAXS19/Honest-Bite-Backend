@@ -110,7 +110,8 @@ export async function resetPasswordHandler(
 export async function getCurrentUserHandler(req: Request, res: Response) {
   try {
     const userId = res.locals.user._id;
-
+    console.log(userId);
+    console.log(req.headers.authorization);
     // Populate both posts and bookmarks
     const user = await findUserById(userId)
       .populate({

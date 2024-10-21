@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import log from "./utils/logger";
-import cors from "cors"; // Import CORS middleware
+import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
 import { DocumentType } from "@typegoose/typegoose";
@@ -19,7 +19,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://honest-bite-frontend.vercel.app/",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -111,6 +111,7 @@ app.use(
 
 app.use(express.json());
 app.use(deserializeUser);
+
 app.get("/test", (req, res) => {
   res.send("Hello world!");
 });
